@@ -13,4 +13,6 @@ An AI powered search engine tool for your notes
 
 ## TODO:
 - ~~Find a way to read .docx files and store the result~~
-- Integrate OpenAI api to generate a list of relevant terms
+- ~~Integrate OpenAI api to generate a list of relevant terms~~
+- ~~Use WIkipedia API to get information Based on those terms~~
+- 

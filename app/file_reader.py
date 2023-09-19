@@ -7,14 +7,28 @@ from pprint import pprint
 
 def read_docx(docx_filename: str) -> str:
     """
-    :param docx_filename:
+    :param docx_filename: The filename (and location) of the .docx document
     :return: Text content of the .docx file
     """
-    text = textract.process(docx_filename)
+    text: bytes = textract.process(docx_filename)
     return text.decode('utf-8')
 
 
-test_text = read_docx("../static/testDoc.docx")
-with open("dump.txt",'w') as file:
-    file.write(test_text)
-print(test_text)
+def read_txt(txt_filename: str) -> str:
+    """
+
+    :param txt_filename: The filename (and location) of the txt document
+    :return: Text content of the .txt file
+    """
+    with open(txt_filename, 'r') as file:
+        return file.read()
+
+
+def read_pdf(pdf_filename: str) -> str:
+    """
+
+    :param pdf_filename: The filename (and location) of the pdf document
+    :return: Text content of the .pdf file
+    """
+    text: bytes = textract.process(pdf_filename, extension='pdf')
+    return text.decode('utf-8')
