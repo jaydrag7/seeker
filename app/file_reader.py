@@ -1,3 +1,6 @@
+"""
+All File Reading functions go here
+"""
 import textract
 from pprint import pprint
 

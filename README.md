@@ -12,4 +12,5 @@ An AI powered search engine tool for your notes
   - If no files are found on a given topic, only return this additional context and provide some helpful resources
 
 ## TODO:
-- Find a way to read .docx files and store the result
+- ~~Find a way to read .docx files and store the result~~
+- Integrate OpenAI api to generate a list of relevant terms
