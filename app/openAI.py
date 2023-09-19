@@ -4,7 +4,6 @@ All OpenAI based code goes here
 import openai
 from dotenv import load_dotenv
 import os
-from pprint import pprint
 
 load_dotenv()
 api_key = os.getenv("GPT_SECRET")
@@ -28,6 +27,3 @@ def generate_keywords(search_term: str) -> list:
     str_terms: str = completion['choices'][0]['message']['content']
     list_terms: list = str_terms.split(', ')
     return list_terms
-
-
-pprint(generate_keywords("Sociology"))
