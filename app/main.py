@@ -25,3 +25,8 @@ def wiki_search(term: str) -> dict:
 def generate_terms(term: str) -> dict:
     generated_terms: dict = openAI.generate_keywords(term)
     return generated_terms
+
+
+app.get('/new/endpoint')
+def test():
+    return {"it":"worked"}
