@@ -32,3 +32,4 @@ def read_pdf(pdf_filename: str) -> str:
     """
     text: bytes = textract.process(pdf_filename, extension='pdf')
     return text.decode('utf-8')
+

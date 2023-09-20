@@ -15,4 +15,8 @@ An AI powered search engine tool for your notes
 - ~~Find a way to read .docx files and store the result~~
 - ~~Integrate OpenAI api to generate a list of relevant terms~~
 - ~~Use WIkipedia API to get information Based on those terms~~
+- make responses visible to user
+- Make restAPI for the frontend to use
+- Implement Daena frontend design (make functional)
+- Separate page for search results
 - 

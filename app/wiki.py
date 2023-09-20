@@ -1,6 +1,5 @@
 import wikipedia
 from pprint import pprint
-import json
 
 
 def wiki_search(search_term: str, default: int = 0) -> dict:
@@ -23,5 +22,3 @@ def wiki_search(search_term: str, default: int = 0) -> dict:
     }
 
     return search_result_dict
-
-pprint(wiki_search("Dog"))
