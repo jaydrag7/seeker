@@ -27,6 +27,6 @@ def generate_terms(term: str) -> dict:
     return generated_terms
 
 
-app.get('/new/endpoint')
+@app.get('/new/endpoint')
 def test():
     return {"it":"worked"}
