@@ -1,29 +1,41 @@
 import { db } from "@/utils/firebase";
 import { defineStore } from "pinia";
-import {get,child,ref,update} from "firebase/database"
+import {get,child,ref,update} from "firebase/database";
+import base64, { encode } from 'base-64'
 
 interface UserProfile{
-    OPENAI_API_KEY: any
+    OPENAI_API_KEY: any,
     isLoggedIn: boolean,
-    user: any
-    users: any
+    user: any,
+    users: any,
+    email: String,
+    fname: String,
+    lname: String,
+    pass: any
 }
 export const useUserProfile = defineStore('userprofile',{
     state: (): UserProfile => ({
-        OPENAI_API_KEY: {},
+        OPENAI_API_KEY: '',
         isLoggedIn: false,
         user: {},
-        users: {}
+        users: {},
+        email: '',
+        fname: '',
+        lname: '',
+        pass: ''
     }),
+    getters: {
+        getEmail(state){
+            return state.email
+        }
+    },
     actions:{
         async getApiKey(){
             try{
 
                     const data = await get(child(ref(db),`apiKey`))
                     if(data.exists()){
-                        this.OPENAI_API_KEY = data.val()
-                        console.log(this.OPENAI_API_KEY.key)
-
+                        this.OPENAI_API_KEY = data.val().key
                     }
                 
             }
@@ -33,17 +45,14 @@ export const useUserProfile = defineStore('userprofile',{
             }
         },
 
-        async writeNotes(notes: any){
+         writeNotes(notes: any,uid:any){
             try{
-                if(this.isLoggedIn === true){
-
-                }
-
                 const updates: any={}
-                updates[`/notes`]={
-                    text: notes.text
+                updates[`/users/` + uid + `/notes/${notes.topic}`]={
+                    topic: notes.topic,
+                    content: notes.content
                 }
-                return await update(ref(db),updates)
+                update(ref(db),updates)
 
                 
             }
@@ -60,6 +69,7 @@ export const useUserProfile = defineStore('userprofile',{
                 updates[`/users/` + `${data.email}`]={
                     fname: data.fname,
                     lname: data.lname,
+                    email: data.email2, 
                     password: data.password,
                     isLoggedIn: true,
                 }
@@ -85,13 +95,18 @@ export const useUserProfile = defineStore('userprofile',{
                         const obj = usersArr[i]
                         if(fname === obj.fname && lname === obj.lname && pass === obj.password){
                             this.user = obj
+                            this.email=this.user.email
+                            this.fname = this.user.fname
+                            this.lname = this.user.lname
+                            this.pass = this.user.password
                             console.log(this.user)
                             return true
 
 
                         }
-                        return false
                     }
+                    return false
+
                 }
             
             }
