@@ -1,7 +1,8 @@
 <template>
-    <v-row style="justify-content: center;" class="mt-16">
-        <v-card color="#C8F4F9" class="rounded-lg" height="500" width="500">
-            <v-container v-if="window">
+    <v-row no-gutters style="justify-content: center;" class="mt-16">
+        <v-col class="">
+            <v-sheet color="#FBA797" class="ml-16 mt-16 rounded-xl" height="500">
+                <v-container v-if="window">
                 <v-btn
             class="mt-5 ml-8 rounded-pill"
             size="x-large"
@@ -11,8 +12,8 @@
             @click="googleSignIn()"
         >
             Sign In with Gmail 
-        </v-btn>
-        <v-row class="mt-5 ml-5">
+                </v-btn>
+        <v-row class="mt-2 ml-5">
             <v-col cols="6">
                 <v-text-field clearable variant="outlined" label="Firstname" v-model="fname"/>
             </v-col>
@@ -22,25 +23,24 @@
 
         </v-row>
         <v-row class="mt-5 ml-5">
-            <v-col cols="12">
+            <v-col cols="6">
             <v-text-field clearable variant="outlined" label="Password" type="password" v-model="password"/>
             </v-col>
-        </v-row>
-        <v-row class="ml-7">
-            <span class="text-red"> {{ errorMessage }} </span>
-        </v-row>        
-        <v-row class="mt-5 ml-5">
             <v-btn
                 color="green"
                 size="x-large"
-                width="400"
-                class="ml-2"
+                width="200"
+                class=" ml-3 mt-3"
                 @click="login()"
                 
             >
                 Login
             </v-btn>
+
         </v-row>
+        <v-row class="ml-7">
+            <span class="text-red"> {{ errorMessage }} </span>
+        </v-row>        
         <v-row class="mt-7 ml-7">
             <span>Don't have an account? </span>
             <v-btn
@@ -56,8 +56,8 @@
         </v-row>
 
 
-            </v-container>
-            <v-container v-if="window===false">
+                </v-container>
+                <v-container v-if="window===false">
                 <v-row class="mt-5 ml-8">
             <span>Already have an account? </span>
             <v-btn
@@ -103,10 +103,16 @@
                 Register
             </v-btn>
         </v-row>
-
-
             </v-container>
-        </v-card>
+            </v-sheet>
+
+        </v-col>
+        <v-col class="">
+                <v-img src="login.jpeg" height="500"/>
+           
+
+        </v-col>
+
     </v-row>
 </template>
 <script setup>
@@ -145,6 +151,14 @@
         const objArr = Object.keys(user.users)
         for(let i = 0; i<objArr.length;i++){
             if(objArr.includes(encryptedEmail)){
+                // const userObj = user.users.encryptedEmail
+                // console.log(user.users)
+                // const userForm = {
+                //     fname: userObj.fname,
+                //     lname: userObj.lname,
+                //     email: userObj.email
+                // }
+                // await user.loginGoogleUser(userForm)
                 router.push('/main')
             }else{
                 const nameArr = name.split(' ')
@@ -153,7 +167,8 @@
                 const userForm = {
                     fname: fname,
                     lname: lname,
-                    email: encryptedEmail
+                    email: encryptedEmail,
+                    email2: email
                 }
                 await user.createNewGoogleUser(userForm)
                 router.push('/main')

@@ -92,36 +92,48 @@
 
   
     function setNotes(){
-      console.log(user.email)
+      // console.log(user.email)
       const bytes = encodeURI(user.email)
       const uid = base64.encode(bytes)
-      return user.writeNotes(notes.value,uid)
+      return user.writeUserNotes(notes.value,uid)
+    }
+
+    function setGeneratedNotes(response){
+      const bytes = encodeURI(user.email)
+      const uid = base64.encode(bytes)
+      return user.writeGeneratedNotes(notes.value,uid,response)
     }
 
     function synthesize(){
-      const openai = new OpenAI({
-      apiKey: user.OPENAI_API_KEY, // defaults to process.env["OPENAI_API_KEY"]
-      dangerouslyAllowBrowser: true,
-      });
-    
-      async function main() {
-        const completion = await openai.chat.completions.create({
-          messages: [
-            { role: 'system', content: 'You are a helpful learning assistant tailored for the Jamaican populous. Given content from a user you will extract meaningful keywords and synthesize an easy to follow summary in point format. Append each point you create in an array. If the user has not given more than three sentences you can add relevant information to your response. ' },
-            { role: 'user', content: notes.value.content }
-          ],
-          model: 'gpt-3.5-turbo',
+      try{
+        const openai = new OpenAI({
+        apiKey: user.OPENAI_API_KEY, // defaults to process.env["OPENAI_API_KEY"]
+        dangerouslyAllowBrowser: true,
         });
-        const response = completion.choices[0].message.content
-        console.log(response)
-        text.value = response.split('-')
-        generateArea.value = true
-        
+      
+        async function main() {
+          const completion = await openai.chat.completions.create({
+            messages: [
+              { role: 'system', content: 'You are a helpful learning assistant tailored for the Jamaican populous. Given content from a user you will extract meaningful keywords and synthesize an easy to follow summary in point format. Append each point you create in an array. If the user has not given more than three sentences you can add relevant information to your response. ' },
+              { role: 'user', content: notes.value.content }
+            ],
+            model: 'gpt-3.5-turbo',
+          });
+          const response = completion.choices[0].message.content
+          // setNotes()
+          setGeneratedNotes(response)
+          // console.log(response)
+          text.value = response.split('-')
+          generateArea.value = true
+          
 
+        }
+
+        main()
       }
-
-      main()
-
+      catch(err){
+        console.error(err)
+      }
 
     }  
   

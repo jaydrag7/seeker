@@ -11,7 +11,8 @@ interface UserProfile{
     email: String,
     fname: String,
     lname: String,
-    pass: any
+    pass: any,
+    userNotes: any
 }
 export const useUserProfile = defineStore('userprofile',{
     state: (): UserProfile => ({
@@ -22,7 +23,8 @@ export const useUserProfile = defineStore('userprofile',{
         email: '',
         fname: '',
         lname: '',
-        pass: ''
+        pass: '',
+        userNotes:{}
     }),
     getters: {
         getEmail(state){
@@ -45,7 +47,7 @@ export const useUserProfile = defineStore('userprofile',{
             }
         },
 
-         writeNotes(notes: any,uid:any){
+         writeUserNotes(notes: any,uid:any){
             try{
                 const updates: any={}
                 updates[`/users/` + uid + `/notes/${notes.topic}`]={
@@ -61,6 +63,37 @@ export const useUserProfile = defineStore('userprofile',{
 
             }
         },
+        // async editUserNotes(newNotes:any){
+        //     try{
+        //         const updates: any={}
+        //         updates[`users/`]
+
+
+        //     }
+        //     catch(error){
+        //         console.log(error)
+        //     }
+
+        // },
+        writeGeneratedNotes(notes: any,uid:any,response: any){
+            try{
+                const updates: any={}
+                console.log(response)
+                updates[`/users/` + uid + `/notes/${notes.topic}`]={
+                    topic: notes.topic,
+                    content: notes.content,
+                    generatedResponse: response,
+                }
+                update(ref(db),updates)
+
+                
+            }
+            catch(err){
+                console.log(err)
+
+            }
+        },
+
 
         async createNewUser(data: any){
             try{
@@ -115,6 +148,19 @@ export const useUserProfile = defineStore('userprofile',{
 
             }
         },
+        async loginGoogleUser(userData: any){
+            try{
+                this.email=userData.email
+                this.fname = userData.fname
+                this.lname = userData.lname
+            
+            }
+            catch(err){
+                console.log(err)
+
+            }
+        },
+
         async getUsers(){//upon logging in call this function
             try{
 
@@ -131,6 +177,22 @@ export const useUserProfile = defineStore('userprofile',{
 
             }
         },
+        async getUserNotes(uid:any){
+            try{
+                const data = await get(child(ref(db),`users/${uid}/notes`))
+                if(data.exists()){
+                    this.userNotes = data.val()
+                    console.log(this.userNotes)
+
+                }
+
+                
+
+            }
+            catch(error){
+                console.error(error)
+            }
+        },
 
         async createNewGoogleUser(data:any){
             try{
@@ -138,6 +200,8 @@ export const useUserProfile = defineStore('userprofile',{
                 updates[`/users/` + `${data.email}`]={
                     fname: data.fname,
                     lname: data.lname,
+                    email: data.email2,
+                    isGoogleUser: true,
                     isLoggedIn: true,
                 }
                 return await update(ref(db),updates)
