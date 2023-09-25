@@ -29,7 +29,7 @@
             <v-btn
                 color="green"
                 size="x-large"
-                width="200"
+                width="290"
                 class=" ml-3 mt-3"
                 @click="login()"
                 
@@ -44,7 +44,7 @@
         <v-row class="mt-7 ml-7">
             <span>Don't have an account? </span>
             <v-btn
-                color="blue"
+                color=""
                 size="x-small"
                 class="ml-2 mt-1"
                 variant="tonal"
@@ -61,7 +61,7 @@
                 <v-row class="mt-5 ml-8">
             <span>Already have an account? </span>
             <v-btn
-                color="blue"
+                color=""
                 size="x-small"
                 class="ml-2 mt-1"
                 variant="tonal"
@@ -91,7 +91,7 @@
                 <v-text-field clearable variant="outlined" label="Password" type="password" v-model="password"/>
             </v-col>
         </v-row>
-        <v-row class="mt-5 ml-5">
+        <v-row class="mt-5 ml-5" style="justify-content: center;">
             <v-btn
                 color="green"
                 size="x-large"
@@ -108,9 +108,7 @@
 
         </v-col>
         <v-col class="">
-                <v-img src="login.jpeg" height="500"/>
-           
-
+            <v-img src="login.jpeg" height="500"/>
         </v-col>
 
     </v-row>
@@ -197,6 +195,7 @@
             }
             // console.log(userForm.value.password)
             await user.createNewUser(userForm)
+            await user.loginUser(userForm)
             router.push('/main')
 
         }
@@ -225,3 +224,8 @@
 
 
 </script>
+<style>
+  body{
+    background-color: #FFEFC8;
+  }
+</style>

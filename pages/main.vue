@@ -1,16 +1,21 @@
 <template>
   <v-container style="height:100%;justify-content: center;">
+    <v-row style="justify-content: center;">
+      <v-img src="logo.jpeg" class="mb-6" height="90"/> 
+    </v-row>
     <v-toolbar
       color="#FFEFC8"
       class="ml-16"
     >
-      <v-img src="logo.jpeg" class="ml-16"/> 
       <v-row no-gutters class="font-weight-bold text-h5 ml-16">
-        <span class="mr-n16">Welcome Back {{ user.fname }} !</span> 
-        <v-img src="wave.gif" height="30" class="ml-n16"/>
+        <v-spacer/>
+        <v-spacer/>
+        <v-spacer/>
+        <span v-if="user.fname" class="mr-n16">Welcome Back {{ user.fname }} !</span> 
+        <v-img src="wave.gif" height="30" class="ml-8"/>
         <v-menu>
             <template v-slot:activator="{ props }">
-              <v-btn variant="text" class="mr-16" icon="mdi-menu" v-bind="props"></v-btn>
+              <v-btn variant="text" class="ml-16" icon="mdi-menu" v-bind="props"></v-btn>
             </template>
 
             <v-list>
@@ -110,7 +115,7 @@
         <v-btn @click="note=!note" icon="mdi-close"/>
         {{ noteTitle }}
       </v-toolbar>
-      <v-row style="justify-content: center;" class="mt-5 pa-0">
+      <v-row style="justify-content: center;" class="mt-10 pa-0">
         <v-card-title class="text-h5 font-weight-bold">
           Your Notes
         </v-card-title>
@@ -118,14 +123,15 @@
       <v-row style="justify-content: center;" class="">
         <v-col cols="5" class="">
           <v-textarea
-          class="mt-n16"
+          class="mt-10"
           :model-value="noteObj.content"
           variant="solo"
           counter
+          auto-grow=true
         />
         </v-col>
       </v-row>
-      <v-row v-if="noteObj.generatedResponse" style="justify-content: center;" class="mt-n16">
+      <v-row v-if="noteObj.generatedResponse" style="justify-content: center;" class="mt-10">
         <v-card-title class="text-h5 font-weight-bold">
           Generated Notes
         </v-card-title>
@@ -133,14 +139,16 @@
       <v-row  
         v-if="noteObj.generatedResponse" 
         style="justify-content: center;" 
-        class="mt-n16" 
-        v-for="(value,i) in noteObj.generatedResponse.split('-')">
-        <span>
+        class="mt-10" 
+        >
+        <v-sheet color="grey-lighten-2" class="rounded-shaped mb-16" width="900">
+          <v-col class="ml-16" cols="10" align="left" v-for="(value,i) in noteObj.generatedResponse.split('-')">
+            <span>
           <v-icon color="green" icon="mdi-circle-small"/>{{ value }}
         </span>
+          </v-col>
+        </v-sheet>
       </v-row>
-
-
     </v-card>
 
 
@@ -159,7 +167,7 @@
   onMounted(async()=>{
     await getNotes()
     placeTopics()
-    console.log(user.userNotes)
+    // console.log(user.userNotes)
   })
   const noteObj = ref({})
   const noteTitle = ref('')

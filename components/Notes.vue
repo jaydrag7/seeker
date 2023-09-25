@@ -13,6 +13,7 @@
         variant="solo"
         label="Content"
         counter
+        auto-grow=true
       />  
       </v-col>
     </v-row>
@@ -52,7 +53,7 @@
     </v-row>
     <v-row style="justify-content: center; max-height: 100px;" class="mt-10">
       <v-card-title v-if="generateArea" class="mt-10 font-weight-bold">
-        Generated Text
+        Generated Notes
       </v-card-title>
     </v-row>
     <v-row style="justify-content: center;" class="">
