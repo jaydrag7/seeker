@@ -167,7 +167,7 @@ export const useUserProfile = defineStore('userprofile',{
                 const data = await get(child(ref(db),`users`))
                 if(data.exists()){
                     this.users = data.val()
-                    console.log(this.users)
+                    // console.log(this.users)
 
                 }
                 

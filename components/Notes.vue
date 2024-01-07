@@ -115,7 +115,7 @@
         async function main() {
           const completion = await openai.chat.completions.create({
             messages: [
-              { role: 'system', content: 'You are a helpful learning assistant tailored for the Jamaican populous. Given content from a user you will extract meaningful keywords and synthesize an easy to follow summary in point format. Append each point you create in an array. If the user has not given more than three sentences you can add relevant information to your response. ' },
+              { role: 'system', content: 'You are a helpful learning assistant tailored for the Jamaican populous. Given content from a user you will extract meaningful keywords and synthesize an easy to follow summary in point format.' },
               { role: 'user', content: notes.value.content }
             ],
             model: 'gpt-3.5-turbo',

@@ -15,13 +15,13 @@
         <v-img src="wave.gif" height="30" class="ml-8"/>
         <v-menu>
             <template v-slot:activator="{ props }">
-              <v-btn variant="text" class="ml-16" icon="mdi-menu" v-bind="props"></v-btn>
+              <v-btn variant="text" icon="mdi-menu" v-bind="props"></v-btn>
             </template>
 
             <v-list>
               <v-list-item>
                 <v-list-item-title>
-                    <v-btn variant="text" append-icon="mdi-logout" @click="$router.push({path:'/'})">
+                    <v-btn variant="text" append-icon="mdi-logout" @click="logout">
                         Logout
                     </v-btn>
                 </v-list-item-title>
@@ -193,8 +193,13 @@
     for(let i = 0; i<topics.length; i++){
       notes.value.push(topics[i])
     }
-    console.log(notes.value)
+    // console.log(notes.value)
 
+  }
+
+  function logout(){
+    //$router.push({path:'/'})
+    window.location.href = '/'
   }
   // function formatText(){
   //   noteArr.value = noteObj.value.generatedResponse.split('-')

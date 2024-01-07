@@ -141,22 +141,25 @@
         const name = seeker.displayName;
         const email = seeker.email;
 
-        console.log(`Name: ${name}`);
-        console.log(`Email: ${email}`);
+        // console.log(`Name: ${name}`);
+        // console.log(`Email: ${email}`);
         await user.getUsers()
         const bytes = encodeURI(email)
         const encryptedEmail = base64.encode(bytes)
         const objArr = Object.keys(user.users)
         for(let i = 0; i<objArr.length;i++){
             if(objArr.includes(encryptedEmail)){
-                // const userObj = user.users.encryptedEmail
-                // console.log(user.users)
-                // const userForm = {
-                //     fname: userObj.fname,
-                //     lname: userObj.lname,
-                //     email: userObj.email
-                // }
-                // await user.loginGoogleUser(userForm)
+                const index = objArr.indexOf(encryptedEmail)
+                const usersObj = user.users
+                const userArr = Object.values(usersObj)
+                const currUser = userArr[index]
+                // console.log(currUser.fname)
+                const userForm = {
+                    fname: currUser.fname,
+                    lname: currUser.lname,
+                    email: currUser.email
+                }
+                await user.loginGoogleUser(userForm)
                 router.push('/main')
             }else{
                 const nameArr = name.split(' ')
