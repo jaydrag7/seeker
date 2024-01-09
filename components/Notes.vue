@@ -1,6 +1,6 @@
 <template>
-    <v-row style="justify-content: center;" class="mt-16">
-      <v-col cols="5">
+    <v-container style="justify-content: center;" class="mt-16">
+      <v-col>
         <v-text-field
           v-model="notes.topic" 
           label="Title"
@@ -16,15 +16,17 @@
         auto-grow=true
       />  
       </v-col>
-    </v-row>
-    <v-row class="" style="justify-content: center;">
+    </v-container>
+    <v-container style="justify-content: center;">
+      <v-row style="justify-content: center;">
         <v-btn
         size="x-large"
-        color="green"
-        class=""
+        color="#FBA797"
+        class="mr-1"
+        append-icon="mdi-content-save-outline"
         @click="setNotes(),snackbar=true"
       >
-        Save <v-icon icon="mdi-content-save-outline"/>
+        Save
       </v-btn>
       <v-snackbar
         color="green"
@@ -45,29 +47,33 @@
       <v-btn
         size="x-large"
         color="grey"
-        class="ml-16"
+        append-icon="mdi-robot-happy"
         @click="synthesize()"
       >
         Synthesize
       </v-btn>   
-    </v-row>
-    <v-row style="justify-content: center; max-height: 100px;" class="mt-10">
-      <v-card-title v-if="generateArea" class="mt-10 font-weight-bold">
+
+
+      </v-row>
+    </v-container>
+    <v-container style="justify-content: center; max-height: 100px;" class="mt-10">
+      <v-row style="justify-content: center;">
+        <v-card-title v-if="generateArea" class="mt-10 font-weight-bold">
         Generated Notes
       </v-card-title>
-    </v-row>
-    <v-row style="justify-content: center;" class="">
-      <v-sheet color="grey-lighten-2" class="rounded-shaped mb-16" width="900">
-        <v-col class="ml-16" cols="10" align="left" v-for="(value,i) in text" >
-        <span class="ml-10">
-          
+      </v-row>
+    </v-container>
+    <v-container style="justify-content: center;">
+      <v-sheet v-if="generateArea" color="grey-lighten-2" class="rounded-shaped mb-16">
+        <v-col align="left" v-for="(value,i) in text" >
+        <span>          
           <v-icon color="green" icon="mdi-circle-small"/>{{ value }}
         </span>
       </v-col>
 
 
       </v-sheet>
-    </v-row>
+    </v-container>
   </template>
   <script setup>
     import OpenAI from 'openai';
@@ -77,6 +83,7 @@
     // dotenv.config()
   
     const user = useUserProfile()
+    const loading =ref(false)
 
     onMounted(async ()=>{
       await user.getApiKey()

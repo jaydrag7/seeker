@@ -1,117 +1,122 @@
 <template>
-    <v-row no-gutters style="justify-content: center;" class="mt-16">
-        <v-col class="">
-            <v-sheet color="#FBA797" class="ml-16 mt-16 rounded-xl" height="500">
-                <v-container v-if="window">
-                <v-btn
-            class="mt-5 ml-8 rounded-pill"
-            size="x-large"
-            prepend-icon="mdi-gmail"
-            color=""
-            variant="text"
-            @click="googleSignIn()"
-        >
-            Sign In with Gmail 
-                </v-btn>
-        <v-row class="mt-2 ml-5">
-            <v-col cols="6">
-                <v-text-field clearable variant="outlined" label="Firstname" v-model="fname"/>
-            </v-col>
-            <v-col cols="6">
-                <v-text-field clearable variant="outlined" label="Lastname" v-model="lname"/>
+    <v-container style="justify-content: center;">
+        <v-row no-gutters style="justify-content: center;" class="mt-16">
+            <v-col class="ml-10">
+                <v-img src="login.jpeg" height="500"/>
             </v-col>
 
-        </v-row>
-        <v-row class="mt-5 ml-5">
-            <v-col cols="6">
-            <v-text-field clearable variant="outlined" label="Password" type="password" v-model="password"/>
-            </v-col>
-            <v-btn
-                color="green"
-                size="x-large"
-                width="290"
-                class=" ml-3 mt-3"
-                @click="login()"
-                
-            >
-                Login
-            </v-btn>
+            <v-col>
+                <v-sheet color="#FBA797" class="mt-16 rounded-xl" height="500">
+                    <v-container v-if="window">
+                        <v-img src="logo.jpeg" class="mb-6" height="40"/> 
+                        <v-row style="justify-content: left;">
+                            <v-btn
+                            class="mt-5"
+                            size="x-large"
+                            variant="text"
+                            prepend-icon="mdi-google"
+                            @click="googleSignIn()"
+                        >
+                            Sign In with Google
+                        </v-btn>
+                        </v-row>
+            <v-row style="justify-content: left;">
+                <v-col cols="6">
+                    <v-text-field clearable variant="outlined" label="Firstname" v-model="fname"/>
+                </v-col>
+                <v-col cols="6">
+                    <v-text-field clearable variant="outlined" label="Lastname" v-model="lname"/>
+                </v-col>
 
-        </v-row>
-        <v-row class="ml-7">
-            <span class="text-red"> {{ errorMessage }} </span>
-        </v-row>        
-        <v-row class="mt-7 ml-7">
-            <span>Don't have an account? </span>
-            <v-btn
-                color=""
-                size="x-small"
-                class="ml-2 mt-1"
-                variant="tonal"
-                @click="window=!window"
-                
-            >
-                Register
-            </v-btn>
-        </v-row>
-
-
-                </v-container>
-                <v-container v-if="window===false">
-                <v-row class="mt-5 ml-8">
-            <span>Already have an account? </span>
-            <v-btn
-                color=""
-                size="x-small"
-                class="ml-2 mt-1"
-                variant="tonal"
-                @click="window=!window"
-                
-            >
-                Sign In
-            </v-btn>
-        </v-row>
-
-                <v-row class="mt-5 ml-5">
-            <v-col cols="6">
-                <v-text-field clearable variant="outlined" label="Firstname" v-model="fname"/>
-            </v-col>
-            <v-col cols="6">
-                <v-text-field clearable variant="outlined" label="Lastname" v-model="lname"/>
-            </v-col>
-
-        </v-row>
-        <v-row class="mt-5 ml-5">
-            <v-col cols="13">
-                <v-text-field clearable variant="outlined" label="Email" v-model="email"/>
-            </v-col>
-        </v-row>
-        <v-row class="mt-5 ml-5">
-            <v-col cols="13">
+            </v-row>
+            <v-row style="justify-content: left;">
+                <v-col cols="6">
                 <v-text-field clearable variant="outlined" label="Password" type="password" v-model="password"/>
+                </v-col>
+                <v-btn
+                    color="green"
+                    size="x-large"
+                    width="150"
+                    class=" ml-3 mt-3"
+                    @click="login()"
+                    
+                >
+                    Login
+                </v-btn>
+
+            </v-row>
+            <v-row style="justify-content: left;">
+                <span class="text-red"> {{ errorMessage }} </span>
+            </v-row>        
+            <v-row style="justify-content: left;" class="ml-1">
+                <span>Don't have an account? </span>
+                <v-btn
+                    color=""
+                    size="x-small"
+                    class="ml-2 mt-1"
+                    variant="tonal"
+                    @click="window=!window"
+                    
+                >
+                    Register
+                </v-btn>
+            </v-row>
+
+
+                    </v-container>
+                    <v-container v-if="window===false">
+                        <v-row style="justify-content: center;">
+                            <v-img src="logo.jpeg" class="mb-6" height="40"/> 
+                        </v-row>
+                    <v-row style="justify-content: left;" class="mt-5 ml-1">
+                <span>Already have an account? </span>
+                <v-btn
+                    size="x-small"
+                    class="ml-2 mt-1"
+                    variant="tonal"
+                    @click="window=!window"
+                    
+                >
+                    Sign In
+                </v-btn>
+            </v-row>
+
+                    <v-row style="justify-content: left;" class="mt-5">
+                <v-col cols="6">
+                    <v-text-field clearable variant="outlined" label="Firstname" v-model="fname"/>
+                </v-col>
+                <v-col cols="6">
+                    <v-text-field clearable variant="outlined" label="Lastname" v-model="lname"/>
+                </v-col>
+
+            </v-row>
+            <v-row style="justify-content: left;" class="mt-5">
+                <v-col cols="13">
+                    <v-text-field clearable variant="outlined" label="Email" v-model="email"/>
+                </v-col>
+            </v-row>
+            <v-row style="justify-content: left;" class="mt-5">
+                <v-col cols="13">
+                    <v-text-field clearable variant="outlined" label="Password" type="password" v-model="password"/>
+                </v-col>
+            </v-row>
+            <v-row style="justify-content: center;" class="mt-5">
+                <v-btn
+                    color="green"
+                    size="large"
+                    width="450"
+                    @click="registerUser()"
+                    
+                >
+                    Register
+                </v-btn>
+            </v-row>
+                </v-container>
+                </v-sheet>
+
             </v-col>
         </v-row>
-        <v-row class="mt-5 ml-5" style="justify-content: center;">
-            <v-btn
-                color="green"
-                size="x-large"
-                width="400"
-                class="ml-2"
-                @click="registerUser()"
-                
-            >
-                Register
-            </v-btn>
-        </v-row>
-            </v-container>
-            </v-sheet>
-
-        </v-col>
-        <v-col class="">
-            <v-img src="login.jpeg" height="500"/>
-        </v-col>
-
-    </v-row>
+    </v-container>
 </template>
 <script setup>
     import {GoogleAuthProvider ,signInWithPopup} from "firebase/auth";

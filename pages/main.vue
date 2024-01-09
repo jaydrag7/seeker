@@ -7,7 +7,7 @@
       <v-toolbar
       color="#FFEFC8"
     >
-      <v-row no-gutters class="container">
+      <v-row class="container">
         <v-card-title style="justify-content: center;" v-if="user.fname" class="text-h5 font-weight-bold">Welcome back, {{ user.fname }}!</v-card-title> 
         <v-menu>
             <template v-slot:activator="{ props }">
@@ -137,7 +137,7 @@
         class="mt-10" 
         >
         <v-sheet color="grey-lighten-2" class="rounded-shaped mb-16">
-          <v-col class="" cols="" align="left" v-for="(value,i) in noteObj.generatedResponse.split('-')">
+          <v-col align="left" v-for="(value,i) in noteObj.generatedResponse.split('-')">
             <span>
           <v-icon color="green" icon="mdi-circle-small"/>{{ value }}
         </span>
