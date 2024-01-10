@@ -4,7 +4,7 @@ import {get,child,ref,update} from "firebase/database";
 import base64, { encode } from 'base-64'
 
 interface UserProfile{
-    OPENAI_API_KEY: any,
+    GGAI_API_KEY: any,
     isLoggedIn: boolean,
     user: any,
     users: any,
@@ -16,7 +16,7 @@ interface UserProfile{
 }
 export const useUserProfile = defineStore('userprofile',{
     state: (): UserProfile => ({
-        OPENAI_API_KEY: '',
+        GGAI_API_KEY: '',
         isLoggedIn: false,
         user: {},
         users: {},
@@ -37,7 +37,7 @@ export const useUserProfile = defineStore('userprofile',{
 
                     const data = await get(child(ref(db),`apiKey`))
                     if(data.exists()){
-                        this.OPENAI_API_KEY = data.val().key
+                        this.GGAI_API_KEY = data.val().key
                     }
                 
             }
@@ -78,7 +78,7 @@ export const useUserProfile = defineStore('userprofile',{
         writeGeneratedNotes(notes: any,uid:any,response: any){
             try{
                 const updates: any={}
-                console.log(response)
+                // console.log(response)
                 updates[`/users/` + uid + `/notes/${notes.topic}`]={
                     topic: notes.topic,
                     content: notes.content,
@@ -182,7 +182,7 @@ export const useUserProfile = defineStore('userprofile',{
                 const data = await get(child(ref(db),`users/${uid}/notes`))
                 if(data.exists()){
                     this.userNotes = data.val()
-                    console.log(this.userNotes)
+                    // console.log(this.userNotes)
 
                 }
 

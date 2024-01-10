@@ -20,11 +20,13 @@
     <v-container style="justify-content: center;">
       <v-row style="justify-content: center;">
         <v-btn
+        :disabled="loading"
+        :loading="loading"
         size="x-large"
         color="#FBA797"
         class="mr-1"
         append-icon="mdi-content-save-outline"
-        @click="setNotes(),snackbar=true"
+        @click="saveUserNotes()"
       >
         Save
       </v-btn>
@@ -32,11 +34,10 @@
         color="green"
         v-model="snackbar"
       >
-        Your notes have been saved
+        Your note is saved
   
         <template v-slot:actions>
           <v-btn
-            color="red"
             variant="text"
             @click="snackbar = false"
           >
@@ -45,14 +46,30 @@
         </template>
       </v-snackbar>
       <v-btn
+        :disabled="generatedLoading"
+        :loading="generatedLoading"
         size="x-large"
         color="grey"
         append-icon="mdi-robot-happy"
         @click="synthesize()"
       >
         Synthesize
-      </v-btn>   
-
+      </v-btn>
+      <v-snackbar
+        color="green"
+        v-model="snackbar2"
+      >
+        Your note is saved
+  
+        <template v-slot:actions>
+          <v-btn
+            variant="text"
+            @click="snackbar2 = false"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
 
       </v-row>
     </v-container>
@@ -65,7 +82,7 @@
     </v-container>
     <v-container style="justify-content: center;">
       <v-sheet v-if="generateArea" color="grey-lighten-2" class="rounded-shaped mb-16">
-        <v-col align="left" v-for="(value,i) in text" >
+        <v-col align="left" v-for="(value,i) in summary" >
         <span>          
           <v-icon color="green" icon="mdi-circle-small"/>{{ value }}
         </span>
@@ -76,14 +93,15 @@
     </v-container>
   </template>
   <script setup>
-    import OpenAI from 'openai';
+    import {GoogleGenerativeAI } from "@google/generative-ai"
+    // import OpenAI from 'openai';
     import {useUserProfile} from '~/store/store'
     import base64 from 'base-64'
-    // import dotenv from 'dotenv';
-    // dotenv.config()
   
     const user = useUserProfile()
     const loading =ref(false)
+    const generatedLoading =ref(false)
+
 
     onMounted(async ()=>{
       await user.getApiKey()
@@ -95,16 +113,36 @@
       content: ""
     })
     const snackbar = ref(false)
-    const text = ref([])
+    const snackbar2 = ref(false)
+    const summary = ref([])
     const generateArea = ref(false)
+    
+    function saveUserNotes(){
+      // console.log(user.email)
+      loading.value = true
+      const bytes = encodeURI(user.email)
+      const uid = base64.encode(bytes)
+      try {
+        user.writeUserNotes(notes.value, uid)
+      } catch (error) {
+          console.error(error)
+        } finally {
+          setTimeout(() => (loading.value = false, 
+          snackbar.value = true), 3000)
+      }    
+    }
 
-  
-    function setNotes(){
+    function saveAllNotes(){
       // console.log(user.email)
       const bytes = encodeURI(user.email)
       const uid = base64.encode(bytes)
-      return user.writeUserNotes(notes.value,uid)
+      try {
+        user.writeUserNotes(notes.value, uid)
+      } catch (error) {
+          console.error(error)
+        } 
     }
+
 
     function setGeneratedNotes(response){
       const bytes = encodeURI(user.email)
@@ -113,36 +151,57 @@
     }
 
     function synthesize(){
+      generatedLoading.value = true
       try{
-        const openai = new OpenAI({
-        apiKey: user.OPENAI_API_KEY, // defaults to process.env["OPENAI_API_KEY"]
-        dangerouslyAllowBrowser: true,
-        });
+        const genAI = new GoogleGenerativeAI(user.GGAI_API_KEY)
+        // const openai = new OpenAI({
+        // apiKey: user.OPENAI_API_KEY, // defaults to process.env["OPENAI_API_KEY"]
+        // dangerouslyAllowBrowser: true,
+        // });
       
         async function main() {
-          const completion = await openai.chat.completions.create({
-            messages: [
-              { role: 'system', content: 'You are a helpful learning assistant tailored for the Jamaican populous. Given content from a user you will extract meaningful keywords and synthesize an easy to follow summary in point format.' },
-              { role: 'user', content: notes.value.content }
-            ],
-            model: 'gpt-3.5-turbo',
-          });
-          const response = completion.choices[0].message.content
-          // setNotes()
-          setGeneratedNotes(response)
-          // console.log(response)
-          text.value = response.split('-')
+          const model = genAI.getGenerativeModel({model: "gemini-pro"})
+          const prompt = `You are a helpful learning assistant. From the text, synthesize an easy-to-follow
+                           summary in point format. Precede the points with *. For example, 
+                           *Confocal microscopy can generate detailed three dimensional representations of cells.
+                           *Many cell biologists work at the intersection of multiple subfields.
+                           You do not have to include a *Keywords: * or *Summary: * tag, just the points.
+                           If a point has further subpoints just place a colon after the main point and list the subpoints separated by commas. 
+                           For example, *Main Point: subpoint 1, subpoint 2, etc, instead of, *Main Point: *subpoint 1, 
+                           *subpoint 2, *etc.
+                           Here is the text:${notes.value.content} `
+          const result = await model.generateContent(prompt)
+          const response = await result.response
+          const text = response.text()
+          console.log(text)
+          saveAllNotes()
+          setGeneratedNotes(text)
+          summary.value = text.split('*')
           generateArea.value = true
-          
 
+          // const completion = await openai.chat.completions.create({
+          //   messages: [
+          //     { role: 'system', content: 'You are a helpful learning assistant. From the text extract meaningful keywords and synthesize an easy to follow summary in point format.' },
+          //     { role: 'user', content: notes.value.content }
+          //   ],
+          //   model: 'gpt-3.5-turbo',
+          // });
+          // const response = completion.choices[0].message.content
+          // // setNotes()
+          // setGeneratedNotes(response)
+          // // console.log(response)
+          // text.value = response.split('-')
+          // generateArea.value = true
         }
 
         main()
       }
       catch(err){
         console.error(err)
-      }
-
+      }finally {
+          setTimeout(() => (generatedLoading.value = false, 
+          snackbar2.value = true), 3000)
+      }    
     }  
   
   </script>

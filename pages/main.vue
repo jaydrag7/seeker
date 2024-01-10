@@ -112,14 +112,16 @@
         <v-btn @click="note=!note" icon="mdi-close"/>
         {{ noteTitle }}
       </v-toolbar>
-      <v-row style="justify-content: center;" class="mt-10 pa-0">
-        <v-card-title class="text-h5 font-weight-bold">
+      <v-container style="justify-content: center;" class="mt-10">
+        <v-row style="justify-content: center;">
+          <v-card-title class="text-h5 font-weight-bold">
           Your Notes
         </v-card-title>
-      </v-row>
-      <v-container style="justify-content: center;">
+        </v-row>
+      </v-container>
+      <v-container style="justify-content: center;" class="mt-16">
           <v-textarea
-          class="mt-10"
+          class="mt-n16"
           :model-value="noteObj.content"
           variant="solo"
           counter
@@ -137,7 +139,7 @@
         class="mt-10" 
         >
         <v-sheet color="grey-lighten-2" class="rounded-shaped mb-16">
-          <v-col align="left" v-for="(value,i) in noteObj.generatedResponse.split('-')">
+          <v-col align="left" v-for="(value,i) in noteObj.generatedResponse.split('*')">
             <span>
           <v-icon color="green" icon="mdi-circle-small"/>{{ value }}
         </span>
