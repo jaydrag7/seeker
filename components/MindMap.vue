@@ -1,44 +1,44 @@
 <template>
 
-    <svg style="min-width: 800px; min-height: 300px;" ref="svgRef" class="mt-n5"></svg>
+    <svg style="min-width: 800px; min-height: 500px;" ref="svgRef" class=""></svg>
 
 </template>
   
-  <script setup>
+<script setup>
 import { Transformer } from 'markmap-lib';
 import { Markmap } from 'markmap-view';
 
-const transformer = new Transformer();
-const initValue = `# markmap
+  const props = defineProps({
+    map:String
+  })
+  
+  const transformer = new Transformer();
 
-## beautiful
-  - nature
-    - trees
-    - animals
-## useful
-## easy
-## interactive
-`;
-
-const svgRef = ref();
-    const value = ref(initValue);
+  const svgRef = ref();
+  const value = ref(props.map);
     let mm;
 
     const update = () => {
       const { root } = transformer.transform(value.value);
+      console.log(value.value)
       mm.setData(root);
       mm.fit();      
     };
-
-
   
     onMounted(() => {
       mm = Markmap.create(svgRef.value);
       update();
     });  
+
+    watch(() => props.map, (newMapValue) => {
+  value.value = newMapValue;
+  update();
+
+});
+
 </script>
 <style>
-      .container {
+  .container {
   display: flex;
   justify-content: center;
   align-items: center;
