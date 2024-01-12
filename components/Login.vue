@@ -2,17 +2,17 @@
     <v-container style="justify-content: center;">
         <v-row no-gutters style="justify-content: center;" class="mt-16">
             <v-col class="ml-10">
-                <v-img src="login.jpeg" height="500"/>
+                <v-img class="wrapper" src="login.jpeg" height="500"/>
             </v-col>
 
-            <v-col>
-                <v-sheet color="#FBA797" class="mt-16 rounded-xl" height="500">
+            <v-col class="">
+                <v-sheet color="#FBA797" class="mt-16 rounded-xl container" height="500">
                     <v-container v-if="window">
                         <v-img src="logo.jpeg" class="mb-6" height="40"/> 
                         <v-row style="justify-content: left;">
                             <v-btn
-                            class="mt-5"
-                            size="x-large"
+                            class=" ml-3 mt-5"
+                            size="large"
                             variant="text"
                             prepend-icon="mdi-google"
                             @click="googleSignIn()"
@@ -21,23 +21,25 @@
                         </v-btn>
                         </v-row>
             <v-row style="justify-content: left;">
-                <v-col cols="6">
+                <v-col cols="5.5">
                     <v-text-field clearable variant="outlined" label="Firstname" v-model="fname"/>
                 </v-col>
-                <v-col cols="6">
+                <v-col cols="5.1">
                     <v-text-field clearable variant="outlined" label="Lastname" v-model="lname"/>
                 </v-col>
 
             </v-row>
             <v-row style="justify-content: left;">
-                <v-col cols="6">
+                <v-col cols="12">
                 <v-text-field clearable variant="outlined" label="Password" type="password" v-model="password"/>
                 </v-col>
+            </v-row>
+            <v-row style="justify-content: center;">
                 <v-btn
                     color="green"
-                    size="x-large"
-                    width="150"
-                    class=" ml-3 mt-3"
+                    size="large"
+                    width="300"
+                    class="mt-3"
                     @click="login()"
                     
                 >
@@ -48,7 +50,7 @@
             <v-row style="justify-content: left;">
                 <span class="text-red"> {{ errorMessage }} </span>
             </v-row>        
-            <v-row style="justify-content: left;" class="ml-1">
+            <v-row style="justify-content: left;" class="ml-1 mt-16">
                 <span>Don't have an account? </span>
                 <v-btn
                     color=""
@@ -104,7 +106,7 @@
                 <v-btn
                     color="green"
                     size="large"
-                    width="450"
+                    width="300"
                     @click="registerUser()"
                     
                 >
@@ -236,4 +238,26 @@
   body{
     background-color: #FFEFC8;
   }
+  
+  @media only screen and (max-width: 600px) {
+    .container{
+        width: 100%;
+    }    
+  }
+
+  @media only screen and (min-width: 768px) {
+    .container{
+        width: 80%;
+    }
+    
+  }
+
+  @media only screen and (min-width: 920px) {
+    .container{
+        width: 80%;
+    }
+    
+  }
+
+
 </style>

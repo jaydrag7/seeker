@@ -140,22 +140,22 @@
       }    
     }
 
-    function saveAllNotes(){
+    async function saveAllNotes(){
       // console.log(user.email)
       const bytes = encodeURI(user.email)
       const uid = base64.encode(bytes)
       try {
-        user.writeUserNotes(notes.value, uid)
+        return await user.writeUserNotes(notes.value, uid)
       } catch (error) {
           console.error(error)
         } 
     }
 
 
-    function setGeneratedNotes(response){
+    async function setGeneratedNotes(response,map){
       const bytes = encodeURI(user.email)
       const uid = base64.encode(bytes)
-      return user.writeGeneratedNotes(notes.value,uid,response)
+      return await user.writeGeneratedNotes(notes.value,uid,response,map)
     }
 
     function synthesize(){
@@ -182,26 +182,26 @@
           const response = await result.response
           const text = response.text()
           console.log(text)
-          saveAllNotes()
-          setGeneratedNotes(text)
           summary.value = text.split('*')
           const mapPrompt = `Generate a mind map from the given points using the markmap library syntax.
                               Ensure to create a general heading for the mind map.
                               Here is an example of the markup library syntax:
                 
-                              - Main Heading
-                                - content1
+                              # Main Heading
+                                # content1
                                   - subcontent1
                                   - subcontent2
-                              - content2
-                              - content3
-                              - content4
+                              # content2
+                              # content3
+                              # content4
 
                               Here are the points: ${summary.value}`
           const mapResult = await model.generateContent(mapPrompt)
           const mapResponse = await mapResult.response
           const mindMap = mapResponse.text()
           mapContent.value = mindMap.replace(/^```|```$/g, '')
+          await saveAllNotes()
+          await setGeneratedNotes(text,mapContent.value)
           console.log(mindMap.replace(/^```|```$/g, ''))
           // const completion = await openai.chat.completions.create({
           //   messages: [

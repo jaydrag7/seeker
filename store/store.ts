@@ -2,6 +2,7 @@ import { db } from "@/utils/firebase";
 import { defineStore } from "pinia";
 import {get,child,ref,update} from "firebase/database";
 import base64, { encode } from 'base-64'
+import { NULL } from "sass";
 
 interface UserProfile{
     GGAI_API_KEY: any,
@@ -47,14 +48,14 @@ export const useUserProfile = defineStore('userprofile',{
             }
         },
 
-         writeUserNotes(notes: any,uid:any){
+         async writeUserNotes(notes: any,uid:any){
             try{
                 const updates: any={}
                 updates[`/users/` + uid + `/notes/${notes.topic}`]={
                     topic: notes.topic,
                     content: notes.content
                 }
-                update(ref(db),updates)
+                return await update(ref(db),updates)
 
                 
             }
@@ -75,7 +76,7 @@ export const useUserProfile = defineStore('userprofile',{
         //     }
 
         // },
-        writeGeneratedNotes(notes: any,uid:any,response: any){
+        async writeGeneratedNotes(notes: any,uid:any,response: any, map: any){
             try{
                 const updates: any={}
                 // console.log(response)
@@ -83,8 +84,9 @@ export const useUserProfile = defineStore('userprofile',{
                     topic: notes.topic,
                     content: notes.content,
                     generatedResponse: response,
+                    mindMap: map
                 }
-                update(ref(db),updates)
+                return await update(ref(db),updates)
 
                 
             }
@@ -94,6 +96,17 @@ export const useUserProfile = defineStore('userprofile',{
             }
         },
 
+        deleteNote(topic: any, uid: any){
+            try{
+                console.log(topic,uid)
+                const updates : any={}
+                updates[`/users/${uid}/notes/${topic}`] = null
+                return update(ref(db),updates)
+            }catch(err){
+                console.log(err)
+            }
+
+        },
 
         async createNewUser(data: any){
             try{
