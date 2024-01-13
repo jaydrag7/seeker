@@ -1,6 +1,6 @@
 # Seeker
 An AI-powered solution that extracts relevant key points from notes to summarized, easy-to-follow bullet points and a mind map to achieve high-level learning.
-You can create your own personal account and begin your experience with high-level learning or explore the demo account to get a feel of Seeker.
+- You can create your own personal account and begin your experience with high-level learning or explore the demo account to get a feel of Seeker.
 - Demo Account:
   - Firstname: John
   - Lastname: Doe
