@@ -1,44 +1,45 @@
 <template>
     <v-container style="justify-content: center;">
-        <v-row no-gutters style="justify-content: center;" class="mt-16">
+        <v-row no-gutters style="justify-content: center;" class="landing-page">
             <v-col class="ml-10">
-                <v-img class="wrapper" src="login.jpeg" height="500"/>
+                <v-img class="brand-image" src="login.jpeg" height="500"/>
             </v-col>
 
             <v-col class="">
-                <v-sheet color="#FBA797" class="mt-16 rounded-xl container" height="500">
+                <v-sheet border elevation="2" class="mt-16 container" height="500">
                     <v-container v-if="window">
                         <v-img src="logo.jpeg" class="mb-6" height="40"/> 
                         <v-row style="justify-content: left;">
                             <v-btn
+                            :style="{ textTransform: 'none',fontWeight: 'bold' }"
                             class=" ml-3 mt-5"
                             size="large"
                             variant="text"
                             prepend-icon="mdi-google"
                             @click="googleSignIn()"
                         >
-                            Sign In with Google
+                            Sign in with Google
                         </v-btn>
                         </v-row>
             <v-row style="justify-content: left;">
                 <v-col cols="5.5">
-                    <v-text-field clearable variant="outlined" label="Firstname" v-model="fname"/>
+                    <v-text-field variant="outlined" label="Firstname" v-model="fname"/>
                 </v-col>
                 <v-col cols="5.1">
-                    <v-text-field clearable variant="outlined" label="Lastname" v-model="lname"/>
+                    <v-text-field variant="outlined" label="Lastname" v-model="lname"/>
                 </v-col>
 
             </v-row>
             <v-row style="justify-content: left;">
                 <v-col cols="12">
-                <v-text-field clearable variant="outlined" label="Password" type="password" v-model="password"/>
+                <v-text-field variant="outlined" label="Password" type="password" v-model="password"/>
                 </v-col>
             </v-row>
             <v-row style="justify-content: center;">
                 <v-btn
                     color="green"
                     size="large"
-                    width="300"
+                    width="250"
                     class="mt-3"
                     @click="login()"
                     
@@ -47,10 +48,10 @@
                 </v-btn>
 
             </v-row>
-            <v-row style="justify-content: left;">
+            <v-row style="justify-content: left;" class="mt-3 ml-1">
                 <span class="text-red"> {{ errorMessage }} </span>
             </v-row>        
-            <v-row style="justify-content: left;" class="ml-1 mt-16">
+            <v-row style="justify-content: left;" class="ml-1 mt-10">
                 <span>Don't have an account? </span>
                 <v-btn
                     color=""
@@ -85,28 +86,29 @@
 
                     <v-row style="justify-content: left;" class="mt-5">
                 <v-col cols="6">
-                    <v-text-field clearable variant="outlined" label="Firstname" v-model="fname"/>
+                    <v-text-field variant="outlined" label="Firstname" v-model="registerFname"/>
                 </v-col>
                 <v-col cols="6">
-                    <v-text-field clearable variant="outlined" label="Lastname" v-model="lname"/>
+                    <v-text-field variant="outlined" label="Lastname" v-model="registerLname"/>
                 </v-col>
 
             </v-row>
             <v-row style="justify-content: left;" class="mt-5">
                 <v-col cols="13">
-                    <v-text-field clearable variant="outlined" label="Email" v-model="email"/>
+                    <v-text-field variant="outlined" label="Email" v-model="registerEmail"/>
                 </v-col>
             </v-row>
             <v-row style="justify-content: left;" class="mt-5">
                 <v-col cols="13">
-                    <v-text-field clearable variant="outlined" label="Password" type="password" v-model="password"/>
+                    <v-text-field variant="outlined" label="Password" type="password" v-model="registerPassword"/>
                 </v-col>
             </v-row>
             <v-row style="justify-content: center;" class="mt-5">
                 <v-btn
+                    :disabled="isEmpty()"
                     color="green"
                     size="large"
-                    width="300"
+                    width="250"
                     @click="registerUser()"
                     
                 >
@@ -135,6 +137,11 @@
     const email = ref('')
     const password = ref('')
     const errorMessage = ref('')
+    const registerFname = ref('')
+    const registerLname = ref('')
+    const registerEmail = ref('')
+    const registerPassword = ref('')
+
 
 
     async function googleSignIn() {
@@ -191,16 +198,16 @@
 
     async function registerUser(){
         try{
-            var emailBytes = encodeURI(email.value)
+            var emailBytes = encodeURI(registerEmail.value)
             // console.log(password.value)
             var encryptedEmail = base64.encode(emailBytes)
-            var passwordBytes = encodeURI(password.value)
+            var passwordBytes = encodeURI(registerPassword.value)
             var encryptedPassword = base64.encode(passwordBytes)
             const userForm = {
-                fname: fname.value,
-                lname: lname.value,
+                fname: registerFname.value,
+                lname: registerLname.value,
                 email: encryptedEmail,
-                email2: email.value,
+                email2: registerEmail.value,
                 password: encryptedPassword
             }
             // console.log(userForm.value.password)
@@ -212,6 +219,10 @@
         catch(error){
             console.error(error)
         }
+    }
+
+    function isEmpty(){
+        return registerFname.value === '' || registerLname.value === '' || registerEmail.value === '' || registerPassword.value === ''
     }
 
     async function login(){
@@ -238,17 +249,21 @@
   body{
     background-color: #FFEFC8;
   }
-  
-  @media only screen and (max-width: 600px) {
-    .container{
-        width: 100%;
-    }    
+
+
+  @media screen and (max-width: 600px) {
+  .landing-page {
+    flex-direction: column; /* Display elements vertically */
   }
 
-  @media only screen and (min-width: 768px) {
-    .container{
-        width: 80%;
-    }
+  .brand-image {
+    display: none; /* Hide brand image on mobile devices */
+  }
+}
+  @media screen and (min-width: 767px) {
+    .landing-page {
+    flex-direction:row;
+  }
     
   }
 

@@ -19,7 +19,7 @@
             <v-list>
               <v-list-item>
                 <v-list-item-title>
-                    <v-btn variant="text" append-icon="mdi-logout" @click="logout">
+                    <v-btn :style="{ textTransform: 'none' }" variant="text" append-icon="mdi-logout" @click="logout">
                         Logout
                     </v-btn>
                 </v-list-item-title>
@@ -35,6 +35,7 @@
                   >
                   <template v-slot:activator="{props}">
                     <v-btn
+                    :style="{ textTransform: 'none' }"
                       @click="deleteDialog=!deleteDialog"
                       v-bind="props"
                       variant="text"
@@ -53,7 +54,9 @@
                         </v-toolbar-title>
                       </v-toolbar>
                         <v-col v-if="user.userNotes" v-for="(value,i) in user.userNotes">
-                          {{ value.topic }} <v-btn icon="mdi-delete" color="red" append-icon="mdi-delete" variant="tonal" @click="removeNote(value.topic)"/>
+                          <v-sheet class="rounded" color="#F8FAFD">
+                            {{ value.topic }} <v-btn icon="mdi-delete" color="red" append-icon="mdi-delete" variant="text" @click="removeNote(value.topic),refresh()"/>
+                          </v-sheet>
                         </v-col>
                       <v-snackbar
                         color="green"
@@ -63,6 +66,7 @@
                   
                         <template v-slot:actions>
                           <v-btn
+                            :style="{textTransform : 'none'}"
                             variant="text"
                             @click="deleteSnackbar = false"
                           >
@@ -80,67 +84,84 @@
       </v-row>
     </v-toolbar>
     </v-row>
-
+    <v-container class="container">
+      <v-row style="justify-content: center;">
+    <v-btn
+      width="200"
+      height="200"
+      class="mt-16 mr-1"
+      color="#FBA797"
+      @click="uploadSnackbar = !uploadSnackbar"
+    >
     <v-row class="container">
-      <v-btn
-        width="200"
-        height="200"
-        class="mt-16 mr-1"
-        color="#FBA797"
+          <v-col>
+            <v-img src="submit.png" height="65"/>
+          </v-col>
+          <v-col>
+            Upload New Notes
+          </v-col>
+
+    </v-row>
+    </v-btn>
+    <v-snackbar
+        color="red"
+        v-model="uploadSnackbar"
       >
-      <v-row class="container">
-            <v-col>
-              <v-img src="submit.png" height="65"/>
-            </v-col>
-            <v-col>
-              Upload New Notes
-            </v-col>
+        This feature will be available soon
+        <template v-slot:actions>
+          <v-btn
+            :style="{textTransform : 'none'}"
+            variant="text"
+            @click="uploadSnackbar = false"
+          >
+            Close
+          </v-btn>
+        </template>
+    </v-snackbar>
+    <v-dialog
+        scrollable
+        fullscreen
+        scrim
+        v-model="dialog"
+      >
+      <template v-slot:activator="{props}">
+        <v-btn
+          width="200"
+          height="200"
+          @click="dialog=!dialog"
+          v-bind="props"
+          class="mt-16"
+          color="#FBA797"
+        >
+        <v-row class="container">
+          <v-col>
+            <v-img src="notebook.png" height="65"/>
+          </v-col>
+          <v-col>
+            Create New Notes
+          </v-col>
+
+        </v-row>
+        </v-btn>  
+      </template>
+      <v-card>
+          <v-toolbar color="#FBA797">
+            <v-btn @click="dialog=!dialog,refresh()" icon="mdi-close"/>
+            <v-toolbar-title> 
+              New Note <v-icon icon="mdi-note-text"/>
+            </v-toolbar-title>
+
+          </v-toolbar>
+          <Notes/>
+
+        </v-card>       
+
+    </v-dialog>
 
       </v-row>
 
-      </v-btn>
-      <v-dialog
-          scrollable
-          fullscreen
-          scrim
-          v-model="dialog"
-        >
-        <template v-slot:activator="{props}">
-          <v-btn
-            width="200"
-            height="200"
-            @click="dialog=!dialog"
-            v-bind="props"
-            class="mt-16"
-            color="#FBA797"
-          >
-          <v-row class="container">
-            <v-col>
-              <v-img src="notebook.png" height="65"/>
-            </v-col>
-            <v-col>
-              Create New Notes
-            </v-col>
-
-          </v-row>
-          </v-btn>  
-        </template>
-        <v-card>
-            <v-toolbar color="#FBA797">
-              <v-btn @click="dialog=!dialog" icon="mdi-close"/>
-              <v-toolbar-title> 
-                New Note <v-icon icon="mdi-note-text"/>
-              </v-toolbar-title>
-
-            </v-toolbar>
-            <Notes/>
-
-          </v-card>       
-
-      </v-dialog>
-
-    </v-row>
-    <v-container style="width: 350px;" class="container mt-7">
+    </v-container>
+    <v-container style="width: 300px;" class="container mt-7">
     <v-row>
 
         <v-combobox 
@@ -203,6 +224,7 @@
   
         <template v-slot:actions>
           <v-btn
+            :style="{textTransform : 'none'}"
             variant="text"
             @click="snackbar = false"
           >
@@ -228,6 +250,7 @@
   
         <template v-slot:actions>
           <v-btn
+            :style="{textTransform : 'none'}"
             variant="text"
             @click="snackbar2 = false"
           >
@@ -248,7 +271,7 @@
         class="mt-10" 
         >
         <v-sheet color="grey-lighten-2" class="rounded-shaped mb-16">
-          <v-col align="left" v-for="(value,i) in (generateArea ? summary : (noteObj.generatedResponse ? noteObj.generatedResponse.split('*') : null)) ">
+          <v-col align="left" v-for="(value,i) in (noteObj.generatedResponse ? noteObj.generatedResponse.split('*') : (generateArea ? summary : null)) ">
             <span>
           <v-icon color="green" icon="mdi-circle-small"/>{{ value }}
         </span>
@@ -264,8 +287,7 @@
         v-if="noteObj.mindMap || generateArea" 
         style="justify-content: center;" 
       >
-        <MindMap v-if="noteObj.mindMap" :map="noteObj.mindMap" class="mb-7"/>
-        <MindMap v-if="generateArea" :map="mapContent" class="mb-7"/>
+        <MindMap :map="noteObj.mindMap ? noteObj.mindMap : (generateArea ? mapContent: null)" class="mb-7"/>
       </v-row>
     </v-card>
 
@@ -276,6 +298,7 @@
   </v-container>
 </template>
 <script setup>
+  import { db } from "~/utils/firebase"
   import Notes from "~/components/Notes.vue"
   import { useUserProfile } from "~/store/store"
   import base64 from 'base-64'
@@ -288,7 +311,7 @@
   onMounted(async()=>{
     await getNotes()
     await user.getApiKey()
-    placeTopics()
+    refresh()
     // console.log(user.userNotes)
   })
   const noteObj = ref({})
@@ -300,6 +323,7 @@
   const note = ref(false)
   const newContent = ref('')
   const  deleteDialog = ref(false)
+  const uploadSnackbar = ref(false)
 
   function goToNote(item){
     noteTitle.value = item
@@ -315,6 +339,26 @@
     await user.getUserNotes(encrypt)
   }
 
+  function placeTopics(){
+    const topics = Object.keys(user.userNotes)
+    for(let i = 0; i<topics.length; i++){
+      notes.value.push(topics[i])
+    }
+    // console.log(notes.value)
+
+  }
+
+  async function refresh(){
+    notes.value = []
+    const userEmail = user.email
+    const bytes = encodeURI(userEmail)
+    const encrypt = base64.encode(bytes)
+    await user.getUserNotes(encrypt)
+    // console.log(user.userNotes)
+    placeTopics()
+
+  }
+
   const loading =ref(false)
   const snackbar = ref(false)
   const snackbar2 = ref(false)
@@ -324,7 +368,7 @@
   const mapContent = ref('')
   const summary = ref([])
 
-  function saveUserNotes(){
+  async function saveUserNotes(){
       // console.log(user.email)
       loading.value = true
       const bytes = encodeURI(user.email)
@@ -335,7 +379,7 @@
         content: content
       }
       try {
-        user.writeUserNotes(noteMeta, uid)
+        await user.writeUserNotes(noteMeta, uid)
       } catch (error) {
           console.error(error)
         } finally {
@@ -408,7 +452,7 @@
           const result = await model.generateContent(prompt)
           const response = await result.response
           const text = response.text()
-          console.log(text)
+          // console.log(text)
           summary.value = text.split('*')
           const mapPrompt = `Generate a mind map from the given points using the markmap library syntax.
                               Ensure to create a general heading for the mind map.
@@ -429,7 +473,7 @@
           mapContent.value = mindMap.replace(/^```|```$/g, '')
           await saveAllNotes()
           await setGeneratedNotes(text,mapContent.value)
-          console.log(mindMap.replace(/^```|```$/g, ''))
+          // console.log(mindMap.replace(/^```|```$/g, ''))
           // const completion = await openai.chat.completions.create({
           //   messages: [
           //     { role: 'system', content: 'You are a helpful learning assistant. From the text extract meaningful keywords and synthesize an easy to follow summary in point format.' },
@@ -457,18 +501,6 @@
       }    
     }  
 
-
-
-
-  function placeTopics(){
-    const topics = Object.keys(user.userNotes)
-    for(let i = 0; i<topics.length; i++){
-      notes.value.push(topics[i])
-    }
-    // console.log(notes.value)
-
-  }
-
   function logout(){
     //$router.push({path:'/'})
     window.location.href = '/'
@@ -483,7 +515,7 @@
     background-color: #FFEFC8;
   }
   .container {
-  display: flex;
+  display:flex;
   justify-content: center;
   align-items: center;
 }

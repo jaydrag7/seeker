@@ -1,6 +1,6 @@
 import { db } from "@/utils/firebase";
 import { defineStore } from "pinia";
-import {get,child,ref,update} from "firebase/database";
+import {get,child,ref,update, onValue} from "firebase/database";
 import base64, { encode } from 'base-64'
 import { NULL } from "sass";
 
@@ -48,6 +48,41 @@ export const useUserProfile = defineStore('userprofile',{
             }
         },
 
+        async getUserNotes(uid:any){
+            try{
+                const notesRef = ref(db)
+                return onValue(child(notesRef, `users/${uid}/notes`),(snapshot: any)=>{
+                    if(snapshot.exists()){
+                        this.userNotes = snapshot.val()
+                    }
+
+                })
+                // const data = await get(child(ref(db),`users/${uid}/notes`))
+                // if(data.exists()){
+                //     this.userNotes = data.val()
+                //     // console.log(this.userNotes)
+
+                // }
+
+                
+
+            }
+            catch(error){
+                console.error(error)
+            }
+        },
+
+        async deleteNote(topic: any, uid: any){
+            try{
+                const updates: any={}
+                updates[`/users/${uid}/notes/${topic}`] = null
+                return await update(ref(db),updates)  
+
+            }catch(err){
+                console.log(err)
+            }
+        },
+
          async writeUserNotes(notes: any,uid:any){
             try{
                 const updates: any={}
@@ -56,8 +91,6 @@ export const useUserProfile = defineStore('userprofile',{
                     content: notes.content
                 }
                 return await update(ref(db),updates)
-
-                
             }
             catch(err){
                 console.log(err)
@@ -96,21 +129,9 @@ export const useUserProfile = defineStore('userprofile',{
             }
         },
 
-        deleteNote(topic: any, uid: any){
-            try{
-                console.log(topic,uid)
-                const updates : any={}
-                updates[`/users/${uid}/notes/${topic}`] = null
-                return update(ref(db),updates)
-            }catch(err){
-                console.log(err)
-            }
-
-        },
-
         async createNewUser(data: any){
             try{
-                console.log(data.email)
+                // console.log(data.email)
                 const updates: any={}
                 updates[`/users/` + `${data.email}`]={
                     fname: data.fname,
@@ -128,6 +149,7 @@ export const useUserProfile = defineStore('userprofile',{
 
             }
         },
+
         async loginUser(userData: any){
             try{
                 const data = await get(child(ref(db),`users`))
@@ -145,7 +167,7 @@ export const useUserProfile = defineStore('userprofile',{
                             this.fname = this.user.fname
                             this.lname = this.user.lname
                             this.pass = this.user.password
-                            console.log(this.user)
+                            // console.log(this.user)
                             return true
 
 
@@ -161,6 +183,7 @@ export const useUserProfile = defineStore('userprofile',{
 
             }
         },
+
         async loginGoogleUser(userData: any){
             try{
                 this.email=userData.email
@@ -188,22 +211,6 @@ export const useUserProfile = defineStore('userprofile',{
             catch(err){
                 console.log(err)
 
-            }
-        },
-        async getUserNotes(uid:any){
-            try{
-                const data = await get(child(ref(db),`users/${uid}/notes`))
-                if(data.exists()){
-                    this.userNotes = data.val()
-                    // console.log(this.userNotes)
-
-                }
-
-                
-
-            }
-            catch(error){
-                console.error(error)
             }
         },
 

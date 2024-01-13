@@ -20,7 +20,7 @@ import { Markmap } from 'markmap-view';
 
     const update = () => {
       const { root } = transformer.transform(value.value);
-      console.log(value.value)
+      // console.log(value.value)
       mm.setData(root);
       mm.fit();      
     };

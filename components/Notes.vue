@@ -38,6 +38,7 @@
   
         <template v-slot:actions>
           <v-btn
+            :style="{textTransform : 'none'}"
             variant="text"
             @click="snackbar = false"
           >
@@ -63,6 +64,7 @@
   
         <template v-slot:actions>
           <v-btn
+            :style="{textTransform : 'none'}"
             variant="text"
             @click="snackbar2 = false"
           >
@@ -125,13 +127,13 @@
     const generateArea = ref(false)
     const mapContent = ref('')
     
-    function saveUserNotes(){
+    async function saveUserNotes(){
       // console.log(user.email)
       loading.value = true
       const bytes = encodeURI(user.email)
       const uid = base64.encode(bytes)
       try {
-        user.writeUserNotes(notes.value, uid)
+        await user.writeUserNotes(notes.value, uid)        
       } catch (error) {
           console.error(error)
         } finally {
@@ -181,7 +183,7 @@
           const result = await model.generateContent(prompt)
           const response = await result.response
           const text = response.text()
-          console.log(text)
+          // console.log(text)
           summary.value = text.split('*')
           const mapPrompt = `Generate a mind map from the given points using the markmap library syntax.
                               Ensure to create a general heading for the mind map.
@@ -202,7 +204,7 @@
           mapContent.value = mindMap.replace(/^```|```$/g, '')
           await saveAllNotes()
           await setGeneratedNotes(text,mapContent.value)
-          console.log(mindMap.replace(/^```|```$/g, ''))
+          // console.log(mindMap.replace(/^```|```$/g, ''))
           // const completion = await openai.chat.completions.create({
           //   messages: [
           //     { role: 'system', content: 'You are a helpful learning assistant. From the text extract meaningful keywords and synthesize an easy to follow summary in point format.' },
