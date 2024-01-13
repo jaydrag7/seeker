@@ -63,16 +63,6 @@
                         v-model="deleteSnackbar"
                       >
                         Note successfully deleted
-                  
-                        <template v-slot:actions>
-                          <v-btn
-                            :style="{textTransform : 'none'}"
-                            variant="text"
-                            @click="deleteSnackbar = false"
-                          >
-                            Close
-                          </v-btn>
-                        </template>
                       </v-snackbar>
                     </v-card>       
                   </v-dialog>
@@ -108,15 +98,6 @@
         v-model="uploadSnackbar"
       >
         This feature will be available soon
-        <template v-slot:actions>
-          <v-btn
-            :style="{textTransform : 'none'}"
-            variant="text"
-            @click="uploadSnackbar = false"
-          >
-            Close
-          </v-btn>
-        </template>
     </v-snackbar>
     <v-dialog
         scrollable
@@ -221,16 +202,6 @@
         v-model="snackbar"
       >
         Your note is saved
-  
-        <template v-slot:actions>
-          <v-btn
-            :style="{textTransform : 'none'}"
-            variant="text"
-            @click="snackbar = false"
-          >
-            Close
-          </v-btn>
-        </template>
       </v-snackbar>
       <v-btn
         :disabled="generatedLoading"
@@ -247,17 +218,7 @@
         v-model="snackbar2"
       >
         Your note is saved
-  
-        <template v-slot:actions>
-          <v-btn
-            :style="{textTransform : 'none'}"
-            variant="text"
-            @click="snackbar2 = false"
-          >
-            Close
-          </v-btn>
-        </template>
-      </v-snackbar>
+        </v-snackbar>
         </v-row>
       </v-container>
       <v-row v-if="noteObj.generatedResponse || generateArea" style="justify-content: center;" class="mt-10">

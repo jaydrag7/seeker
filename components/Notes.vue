@@ -35,16 +35,6 @@
         v-model="snackbar"
       >
         Your note is saved
-  
-        <template v-slot:actions>
-          <v-btn
-            :style="{textTransform : 'none'}"
-            variant="text"
-            @click="snackbar = false"
-          >
-            Close
-          </v-btn>
-        </template>
       </v-snackbar>
       <v-btn
         :disabled="generatedLoading"
@@ -61,17 +51,7 @@
         v-model="snackbar2"
       >
         Your note is saved
-  
-        <template v-slot:actions>
-          <v-btn
-            :style="{textTransform : 'none'}"
-            variant="text"
-            @click="snackbar2 = false"
-          >
-            Close
-          </v-btn>
-        </template>
-      </v-snackbar>
+        </v-snackbar>
 
       </v-row>
     </v-container>
