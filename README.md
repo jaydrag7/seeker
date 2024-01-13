@@ -1,5 +1,5 @@
 # Seeker
-An AI powered search engine tool for your notes
+An AI-powered solution that extracts relevant key points from notes to summarized, easy-to-follow bullet points and a mind map to achieve high-level learning.
 
 ## Features:
 - Extracts relevant points from long texts utlising Google's gemini-pro LLM.
